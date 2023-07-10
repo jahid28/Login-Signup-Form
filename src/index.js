@@ -46,7 +46,6 @@ app.post('/signup', async (req, res) => {
         password: req.body.password
     }
 
-    
     try {
         const checking = await LogInCollection.findOne({ name: req.body.name })
 
@@ -58,10 +57,16 @@ app.post('/signup', async (req, res) => {
                 naming: req.body.name
             })
         }
-    } catch (error) {
-        res.send("An error occurred while processing the request")
     }
+   catch{
+    res.send("wrong inputs")
+   }
+
+    res.status(201).render("home", {
+        naming: req.body.name
+    })
 })
+
 
 app.post('/login', async (req, res) => {
 
