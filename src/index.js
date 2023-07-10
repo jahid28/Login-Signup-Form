@@ -45,19 +45,17 @@ app.post('/signup', async (req, res) => {
         name: req.body.name,
         password: req.body.password
     }
+    
+try {
+    const checking = await LogInCollection.findOne({ name: req.body.name })
 
-    try {
-        const checking = await LogInCollection.findOne({ name: req.body.name })
-
-        if (checking) {
-            res.send("User Details already exist")
-        } else {
-            await LogInCollection.insertMany([data])
-            res.status(201).render("home", {
-                naming: req.body.name
-            })
-        }
+    if (checking) {
+        res.send("User Details already exist")
+    } else {
+        await LogInCollection.insertMany([data])
     }
+}
+
    catch{
     res.send("wrong inputs")
    }
