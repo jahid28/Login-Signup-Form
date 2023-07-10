@@ -46,25 +46,22 @@ app.post('/signup', async (req, res) => {
         password: req.body.password
     }
 
-    const checking = await LogInCollection.findOne({ name: req.body.name })
+    
+    try {
+        const checking = await LogInCollection.findOne({ name: req.body.name })
 
-   try{
-    if (checking.name === req.body.name && checking.password===req.body.password) {
-        res.send("user details already exists")
+        if (checking) {
+            res.send("User Details already exist")
+        } else {
+            await LogInCollection.insertMany([data])
+            res.status(201).render("home", {
+                naming: req.body.name
+            })
+        }
+    } catch (error) {
+        res.send("An error occurred while processing the request")
     }
-    else{
-        await LogInCollection.insertMany([data])
-    }
-   }
-   catch{
-    res.send("wrong inputs")
-   }
-
-    res.status(201).render("home", {
-        naming: req.body.name
-    })
 })
-
 
 app.post('/login', async (req, res) => {
 
